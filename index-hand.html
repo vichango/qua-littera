@@ -1,0 +1,119 @@
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#ffffff">
+    <title>handwriting.js | Chen-Yu Ho</title>
+    <style type="text/css">
+        .medium-zoom-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity .3s;
+            will-change: opacity
+        }
+
+        .medium-zoom--opened .medium-zoom-overlay {
+            cursor: pointer;
+            cursor: zoom-out;
+            opacity: 1
+        }
+
+        .medium-zoom-image {
+            cursor: pointer;
+            cursor: zoom-in;
+            transition: transform .3s cubic-bezier(.2, 0, .2, 1) !important
+        }
+
+        .medium-zoom-image--hidden {
+            visibility: hidden
+        }
+
+        .medium-zoom-image--opened {
+            position: relative;
+            cursor: pointer;
+            cursor: zoom-out;
+            will-change: transform
+        }
+    </style>
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper"
+    data-wc-page-id="6f08c9f31e3648f857ebfdc594deaa43">
+
+    <div class="page-body">
+        <article class="article article-project">
+            <div class="article-container">
+                <div class="article-style">
+                    <h2 id="summary">Summary</h2>
+                    <p><strong>handwriting.js</strong>, an <a href="https://github.com/ChenYuHo/handwriting.js"
+                            target="_blank" rel="noopener">open-sourced library released on GitHub</a>, provides access
+                        to Google’s handwriting recognition service. Since there’s no official documents or APIs for
+                        this service, this library also implements a set of canvas behaviors which can capture, send
+                        handwritings in proper format and has undo/redo functionality. <a href="#demo">Demo</a> is
+                        available below.</p>
+                    <h2 id="demo">Demo</h2>
+                    <div>
+                        <span style="display : inline-block">
+                            PenSize <span id="lineWidth">3</span><input type="range" id="penSize" min="1" max="30"
+                                value="3" data-ddg-inputtype="unknown">
+                            <br>
+                            <canvas id="canvas" width="400" height="400"
+                                style="border: 2px solid; cursor: crosshair;"></canvas>
+                            <br>
+                            <form>
+                                Language:
+                                <select id="language" data-ddg-inputtype="unknown">
+                                    <option value="zh_TW" selected="selected">Chinese</option>
+                                    <option value="ja">Japanese</option>
+                                    <option value="en">English</option>
+                                </select>
+                            </form>
+                            <br>
+                            <button onclick="canvas.erase();">Erase</button>
+                            <button onclick="
+                                var e = document.getElementById('language');
+                                canvas.setOptions({language: e.options[e.selectedIndex].value});
+                                canvas.recognize();
+                            ">Send</button>
+                            <button onclick="canvas.undo()">Undo</button>
+                            <button onclick="canvas.redo()">Redo</button>
+                            <br>
+                            result: <span id="result"></span>
+                        </span>
+                        <script type="text/javascript" src="handwriting.canvas.js"></script>
+                        <script type="text/javascript" defer="">
+                            var canvas = new handwriting.Canvas(document.getElementById('canvas'), 3);
+                            var width = document.getElementById("demo").clientWidth
+                            canvas.cxt.canvas.width = width < 400 ? width : 400;
+                            canvas.cxt.canvas.height = width < 400 ? width : 400;
+                            canvas.setCallBack(function (data, err) {
+                                if (err) throw err;
+                                else document.getElementById("result").innerHTML = data;
+                            });
+                            canvas.set_Undo_Redo(true, true);
+                            var penSize = document.getElementById("penSize");
+                            penSize.addEventListener("mousemove", function () {
+                                document.getElementById("lineWidth").innerHTML = penSize.value;
+                            });
+                            penSize.addEventListener("change", function () {
+                                canvas.setLineWidth(penSize.value);
+                            });
+                        </script>
+                    </div>
+                </div>
+
+                <div class="article-tags">
+                    <a class="badge badge-light" href="/tags/academia-sinica/">Academia-Sinica</a>
+                    <a class="badge badge-light" href="/tags/algorithms/">Algorithms</a>
+                </div>
+            </div>
+        </article>
+    </div>
+</body>
+
+</html>
