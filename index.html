@@ -16,11 +16,6 @@
 
 <body>
     <div class="contentarea">
-        <h1>MDN - navigator.mediaDevices.getUserMedia(): Still photo capture demo</h1>
-        <p>
-            This example demonstrates how to set up a media stream using your built-in
-            webcam, fetch an image from that stream, and create a PNG using that image.
-        </p>
         <div class="camera">
             <video id="video">Video stream not available.</video>
             <button id="startbutton">Take photo</button>
@@ -29,45 +24,11 @@
         <div class="output">
             <img id="photo" alt="The screen capture will appear in this box." />
         </div>
-        <p>
-            Visit our article
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos">
-                Taking still photos with WebRTC</a>
-            to learn more about the technologies used here.
-        </p>
     </div>
 
-    <!-- <div class="contentarea">
-        <canvas id="can" width="400" height="400" style="border: 2px solid; cursor: crosshair;"></canvas>
-
-        <script>
-            var can1 = new handwriting.Canvas(document.getElementById("can"));
-            
-            //Set callback function
-            can1.setCallBack(function(data, err) {
-                if(err) throw err;
-                else console.log(data);
-            });
-
-            //Set line width shown on the canvas element (default: 3)
-            can1.setLineWidth(5);
-
-            //Set options
-            can1.setOptions(
-                {
-                    language: "fr_CH",
-                    numOfReturn: 1
-                }
-            );
-        </script>
-
-        <button onclick="handwriting.recognize(can1, options, callback);">Recognize</button>
-    </div> -->
-
-    <div class="article-container">
+    <div class="contentarea">
         <div class="article-style">
-            <h2 id="demo">Demo</h2>
-            <canvas id="handwriting" width="400" height="400" style="border: 2px solid; cursor: crosshair;"></canvas>
+            <canvas id="handwritingCanvas" width="400" height="400" style="border: 2px solid; cursor: crosshair;"></canvas>
             
             <div>
                 PenSize <span id="lineWidth">3</span><input type="range" id="penSize" min="1" max="30"
@@ -77,20 +38,18 @@
                 <form>
                     Language:
                     <select id="language" data-ddg-inputtype="unknown">
-                        <option value="zh_TW" selected="selected">Chinese</option>
-                        <option value="ja">Japanese</option>
-                        <option value="en">English</option>
+                        <option value="fr" selected="selected">French</option>
                     </select>
                 </form>
                 <br>
-                <button onclick="canvas.erase();">Erase</button>
+                <button onclick="handwritingCanvas.erase();">Erase</button>
                 <button onclick="
                     var e = document.getElementById('language');
-                    canvas.setOptions({language: e.options[e.selectedIndex].value});
-                    canvas.recognize();
+                    handwritingCanvas.setOptions({language: e.options[e.selectedIndex].value});
+                    handwritingCanvas.recognize();
                 ">Send</button>
-                <button onclick="canvas.undo()">Undo</button>
-                <button onclick="canvas.redo()">Redo</button>
+                <button onclick="handwritingCanvas.undo()">Undo</button>
+                <button onclick="handwritingCanvas.redo()">Redo</button>
                 <br>
                 result: <span id="result"></span>
             </div>
@@ -99,7 +58,7 @@
             <script>
                 console.log('Creating');
                 
-                var handwritingCanvas= new handwriting.Canvas(document.getElementById('handwriting'), 3);
+                var handwritingCanvas= new handwriting.Canvas(document.getElementById('handwritingCanvas'), 3);
 
                 // var width = document.getElementById("demo").clientWidth
                 // handwritingCanvas.cxt.handwritingCanvas.width = width < 400 ? width : 400;
